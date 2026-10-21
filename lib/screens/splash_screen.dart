@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodel/app_viewmodel.dart';
@@ -59,21 +58,23 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             // Swap this Container for Image.asset
             Image.asset(
-              'assets/logo.png',
+              'assets/mymobo.png',
               width: 300,
               height: 300,
               fit: BoxFit.contain,
             ),
+           /*
             const SizedBox(height: 20),
             Text(
               'MyMoboWallet',
-              style: GoogleFonts.lobster( textStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontFamily: 'Lobster',
                 fontWeight: FontWeight.w800,
                 fontSize: 42,
                 color: scheme.primary,
               ),
-              ),
             ),
+           */
             const SizedBox(height: 32),
             if (_authFailed) ...[
               const Text('Authentication required'),

@@ -72,12 +72,12 @@ class AppViewModel extends ChangeNotifier {
   Future<SplashDestination> _resolveSplashAuth() async {
     if (!hasUser) return SplashDestination.start;
     if (!_biometricEnabled) return SplashDestination.home;
-    final ok = await _auth.authenticate(reason: 'Unlock DigiWallet');
+    final ok = await _auth.authenticate(reason: 'Unlock mymobo');
     return ok ? SplashDestination.home : SplashDestination.authFailed;
   }
 
   /// For a "Try again" button when the splash auth fails.
-  Future<bool> retryUnlock() => _auth.authenticate(reason: 'Unlock DigiWallet');
+  Future<bool> retryUnlock() => _auth.authenticate(reason: 'Unlock mymobo');
 
   // ======================= AUTH GUARD =======================
 

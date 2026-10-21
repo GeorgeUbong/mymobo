@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodel/app_viewmodel.dart';
@@ -66,11 +65,10 @@ class _CardsTab extends StatelessWidget {
           firstName == null || firstName.isEmpty
               ? 'My Wallet'
               : 'Hi, $firstName',
-          style: GoogleFonts.lobster(
-            textStyle: TextStyle(
-              fontSize: 32,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          style: TextStyle(
+            fontFamily: 'Lobster',
+            fontSize: 32,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

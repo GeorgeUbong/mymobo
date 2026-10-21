@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../model/card_model.dart';
 import '../themes/app_themes.dart';
@@ -97,11 +96,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
         centerTitle: false,
         title: Text(
           'Add card',
-          style: GoogleFonts.lobster(
-            textStyle: TextStyle(
-              fontSize: 32,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          style: TextStyle(
+            fontFamily: 'Lobster',
+            fontSize: 32,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

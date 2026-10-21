@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -14,7 +15,11 @@ class AuthRepository {
   Future<bool> isDeviceSupported() async {
     try {
       return await _auth.isDeviceSupported();
-    } on PlatformException {
+    } on PlatformException catch (e) {
+      debugPrint('isDeviceSupported failed: ${e.code}');
+      return false;
+    } on LocalAuthException catch (e) {
+      debugPrint('isDeviceSupported failed: ${e.code}');
       return false;
     }
   }
@@ -26,7 +31,11 @@ class AuthRepository {
       if (!canCheck) return false;
       final available = await _auth.getAvailableBiometrics();
       return available.isNotEmpty;
-    } on PlatformException {
+    } on PlatformException catch (e) {
+      debugPrint('hasBiometrics failed: ${e.code}');
+      return false;
+    } on LocalAuthException catch (e) {
+      debugPrint('hasBiometrics failed: ${e.code}');
       return false;
     }
   }
@@ -41,7 +50,10 @@ class AuthRepository {
     bool biometricOnly = false,
   }) async {
     try {
-      if (!await isDeviceSupported()) return false;
+      if (!await isDeviceSupported()) {
+        debugPrint('Local auth: device not supported (no screen lock/biometrics set up)');
+        return false;
+      }
 
       return await _auth.authenticate(
         localizedReason: reason,
@@ -49,8 +61,15 @@ class AuthRepository {
         // Retry authentication if the app is backgrounded during the prompt.
         persistAcrossBackgrounding: true,
       );
-    } on PlatformException {
-      // Not enrolled, locked out, user cancelled, etc.
+    } on LocalAuthException catch (e) {
+      // e.g. userCanceled, noBiometricsEnrolled, lockedOut, noActivity...
+      debugPrint('Local auth failed: ${e.code}');
+      return false;
+    } on PlatformException catch (e) {
+      debugPrint('Local auth platform error: ${e.code} ${e.message}');
+      return false;
+    } catch (e) {
+      debugPrint('Local auth error: $e');
       return false;
     }
   }

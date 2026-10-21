@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../model/card_model.dart';
@@ -78,7 +77,15 @@ class _CardViewScreenState extends State<CardViewScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(card.name,  style: GoogleFonts.lobster(textStyle: TextStyle(fontSize: 32, color: Theme.of(context).colorScheme.primary)))),
+        title: Text(
+          card.name,
+          style: TextStyle(
+            fontFamily: 'Lobster',
+            fontSize: 32,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -115,13 +122,21 @@ class _CardViewScreenState extends State<CardViewScreen> {
             width: double.infinity,
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 252, 167),
-              borderRadius: BorderRadius.circular(30)
+              color: Colors.red.withAlpha(20),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: Colors.red, width: 0.5),
             ),
             child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Dangerzone', style: GoogleFonts.lobster(textStyle: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.error )),),
+                Text(
+                  'Dangerzone',
+                  style: TextStyle(
+                    fontFamily: 'Lobster',
+                    fontSize: 20,
+                    color: const Color.fromARGB(255, 204, 14, 0),
+                  ),
+                ),
                 SizedBox(height: 20,),
 
                 //button
@@ -130,12 +145,15 @@ class _CardViewScreenState extends State<CardViewScreen> {
                 }, 
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-  
+                  backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(80)
+                )
                 ),
                 child: TextButton.icon(
               onPressed: () {},
-              icon: Icon(Icons.delete_outline, color: scheme.error),
-              label: Text('Delete card', style: TextStyle(color: scheme.error)),
+              icon: Icon(Icons.delete_outline, color: Colors.white),
+              label: Text('Delete card', style: TextStyle(color: Colors.white)),
             ),)
               ],
             )

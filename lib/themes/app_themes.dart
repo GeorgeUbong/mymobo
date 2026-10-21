@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'card_themes.dart';
 
@@ -8,7 +7,7 @@ import 'card_themes.dart';
 class AppTheme {
   AppTheme._();
 
-  static const _seed = Color(0xFF001F54); // brand colour #001F54
+  static const _seed = Color(0xFF9C78FF); // brand colour #9C78FF
 
   static ThemeData get light => _build(
         brightness: Brightness.light,
@@ -40,14 +39,15 @@ class AppTheme {
     return base.copyWith(
       scaffoldBackgroundColor:
           isDark ? const Color(0xFF0F1214) : const Color(0xFFF6F8F9),
-      textTheme: GoogleFonts.latoTextTheme(base.textTheme),
+      textTheme: base.textTheme.apply(fontFamily: 'Lato'),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: scheme.onSurface,
-        titleTextStyle: GoogleFonts.lato(
+        titleTextStyle: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: scheme.onSurface,

@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../viewmodel/app_viewmodel.dart';
 import 'signUp_screen.dart';
@@ -32,7 +31,11 @@ class SettingsScreen extends StatelessWidget {
         centerTitle: false,
         title: Text(
           'Settings',
-          style: GoogleFonts.lobster(textStyle:  TextStyle(fontSize: 32, color: Theme.of(context).colorScheme.primary)),
+          style: TextStyle(
+            fontFamily: 'Lobster',
+            fontSize: 32,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
       body: ListView(

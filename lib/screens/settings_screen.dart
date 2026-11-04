@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../ads/ad_banner_widget.dart';
 import '../viewmodel/app_viewmodel.dart';
 import 'signUp_screen.dart';
 
@@ -38,138 +39,145 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
+      body: Column(
         children: [
-          // ---------- Profile ----------
-          Center(
-            child: Stack(
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(20),
               children: [
-                CircleAvatar(
-                  radius: 54,
-                  backgroundColor: scheme.primaryContainer,
-                  backgroundImage: image,
-                  child: image == null
-                      ? Text(
-                          initial,
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.w800,
-                            color: scheme.onPrimaryContainer,
+                // ---------- Profile ----------
+                Center(
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 54,
+                        backgroundColor: scheme.primaryContainer,
+                        backgroundImage: image,
+                        child: image == null
+                            ? Text(
+                                initial,
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.w800,
+                                  color: scheme.onPrimaryContainer,
+                                ),
+                              )
+                            : null,
+                      ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: GestureDetector(
+                          onTap: () => _pickImage(context, vm),
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundColor: scheme.primary,
+                            child: Icon(
+                              Icons.camera_alt_rounded,
+                              size: 18,
+                              color: scheme.onPrimary,
+                            ),
                           ),
-                        )
-                      : null,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: GestureDetector(
-                    onTap: () => _pickImage(context, vm),
-                    child: CircleAvatar(
-                      radius: 18,
-                      backgroundColor: scheme.primary,
-                      child: Icon(
-                        Icons.camera_alt_rounded,
-                        size: 18,
-                        color: scheme.onPrimary,
+                const SizedBox(height: 12),
+                Center(
+                  child: Text(
+                    user?.name ?? '',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                if (user != null)
+                  Center(
+                    child: Text(
+                      'Age ${user.age} · Earns ${_money(user.yearlyEarning)} / year',
+                      style: TextStyle(color: scheme.onSurfaceVariant),
+                    ),
+                  ),
+                if (image != null)
+                  Center(
+                    child: TextButton(
+                      onPressed: () => _removeImage(vm),
+                      child: const Text('Remove photo'),
+                    ),
+                  ),
+                const SizedBox(height: 16),
+
+                // ---------- Account ----------
+                const _SectionTitle('Account'),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.edit_outlined),
+                    title: const Text('Edit details'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const SignUpScreen(isEditing: true),
                       ),
                     ),
+                  ),
+                ),
+
+                // ---------- Appearance ----------
+                const _SectionTitle('Appearance'),
+                SizedBox(
+                  width: double.infinity,
+                  child: SegmentedButton<ThemeMode>(
+                    segments: const [
+                      ButtonSegment(
+                        value: ThemeMode.system,
+                        label: Text('System'),
+                        icon: Icon(Icons.brightness_auto_outlined),
+                      ),
+                      ButtonSegment(
+                        value: ThemeMode.light,
+                        label: Text('Light'),
+                        icon: Icon(Icons.light_mode_outlined),
+                      ),
+                      ButtonSegment(
+                        value: ThemeMode.dark,
+                        label: Text('Dark'),
+                        icon: Icon(Icons.dark_mode_outlined),
+                      ),
+                    ],
+                    selected: {vm.themeMode},
+                    onSelectionChanged: (s) => vm.setThemeMode(s.first),
+                  ),
+                ),
+
+                // ---------- Security ----------
+                const _SectionTitle('Security'),
+                Card(
+                  child: SwitchListTile(
+                    secondary: const Icon(Icons.fingerprint),
+                    title: const Text('Biometric protection'),
+                    subtitle: const Text(
+                      'Require fingerprint / face to unlock the app and view card details.',
+                    ),
+                    value: vm.biometricEnabled,
+                    onChanged: (v) async {
+                      final ok = await vm.setBiometricEnabled(v);
+                      if (!ok && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Couldn't change this setting. Make sure a fingerprint, face or screen lock is set up.",
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          Center(
-            child: Text(
-              user?.name ?? '',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
-            ),
-          ),
-          if (user != null)
-            Center(
-              child: Text(
-                'Age ${user.age} · Earns ${_money(user.yearlyEarning)} / year',
-                style: TextStyle(color: scheme.onSurfaceVariant),
-              ),
-            ),
-          if (image != null)
-            Center(
-              child: TextButton(
-                onPressed: () => _removeImage(vm),
-                child: const Text('Remove photo'),
-              ),
-            ),
-          const SizedBox(height: 16),
-
-          // ---------- Account ----------
-          const _SectionTitle('Account'),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.edit_outlined),
-              title: const Text('Edit details'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SignUpScreen(isEditing: true),
-                ),
-              ),
-            ),
-          ),
-
-          // ---------- Appearance ----------
-          const _SectionTitle('Appearance'),
-          SizedBox(
-            width: double.infinity,
-            child: SegmentedButton<ThemeMode>(
-              segments: const [
-                ButtonSegment(
-                  value: ThemeMode.system,
-                  label: Text('System'),
-                  icon: Icon(Icons.brightness_auto_outlined),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.light,
-                  label: Text('Light'),
-                  icon: Icon(Icons.light_mode_outlined),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.dark,
-                  label: Text('Dark'),
-                  icon: Icon(Icons.dark_mode_outlined),
-                ),
-              ],
-              selected: {vm.themeMode},
-              onSelectionChanged: (s) => vm.setThemeMode(s.first),
-            ),
-          ),
-
-          // ---------- Security ----------
-          const _SectionTitle('Security'),
-          Card(
-            child: SwitchListTile(
-              secondary: const Icon(Icons.fingerprint),
-              title: const Text('Biometric protection'),
-              subtitle: const Text(
-                'Require fingerprint / face to unlock the app and view card details.',
-              ),
-              value: vm.biometricEnabled,
-              onChanged: (v) async {
-                final ok = await vm.setBiometricEnabled(v);
-                if (!ok && context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        "Couldn't change this setting. Make sure a fingerprint, face or screen lock is set up.",
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
+          const AdBannerWidget(),
         ],
       ),
     );

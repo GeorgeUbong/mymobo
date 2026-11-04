@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../ads/ad_banner_widget.dart';
 import '../viewmodel/app_viewmodel.dart';
 import '../viewmodel/digi_widget.dart';
 import 'addCard_screen.dart';
@@ -72,7 +73,12 @@ class _CardsTab extends StatelessWidget {
           ),
         ),
       ),
-      body: _body(context, vm, scheme),
+      body: Column(
+        children: [
+          Expanded(child: _body(context, vm, scheme)),
+          const AdBannerWidget(),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: scheme.primary, // theme colour from AppTheme
         foregroundColor: scheme.onPrimary,

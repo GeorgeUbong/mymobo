@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
+import 'ads/ad_config.dart';
 import 'repository/auth_repository.dart';
 import 'repository/storage_repository.dart';
 import 'repository/settings_repository.dart';
@@ -10,6 +12,10 @@ import 'viewmodel/app_viewmodel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (AdConfig.shouldInitialize) {
+    await MobileAds.instance.initialize();
+  }
 
   final appVm = AppViewModel(
     auth: AuthRepository(),

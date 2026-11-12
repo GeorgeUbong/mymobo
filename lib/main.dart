@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     final mode = context.select<AppViewModel, ThemeMode>((vm) => vm.themeMode);
 
     return MaterialApp(
-      title: 'DigiWallet',
+      title: 'Mymobo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
